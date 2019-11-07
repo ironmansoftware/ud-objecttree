@@ -5,13 +5,11 @@ $Maps = Get-ChildItem "$PSScriptRoot\*.map"
 
 $AssetId = [UniversalDashboard.Services.AssetService]::Instance.RegisterScript($IndexJs.FullName)
 
-foreach($item in $JsFiles)
-{
+foreach ($item in $JsFiles) {
     [UniversalDashboard.Services.AssetService]::Instance.RegisterScript($item.FullName) | Out-Null
 }
 
-foreach($item in $Maps)
-{
+foreach ($item in $Maps) {
     [UniversalDashboard.Services.AssetService]::Instance.RegisterScript($item.FullName) | Out-Null
 }
 
@@ -20,17 +18,21 @@ function New-UDObjectTree {
         [Parameter()]
         [string]$Id = (New-Guid).ToString(),
         [Parameter(Mandatory = $true)]
-        $Object
+        $Object,
+        [Parameter()]
+        [switch]$Json
+        
     )
 
     End {
         @{
-            assetId = $AssetId 
-            isPlugin = $true 
-            type = "ud-objecttree"
+            assetId  = $AssetId
+            isPlugin = $true
+            type     = "ud-objecttree"
 
-            id = $Id
-            object = $Object
+            id       = $Id
+            object   = $Object
+            isJson   = $Json.IsPresent
         }
     }
 }
